@@ -1,0 +1,92 @@
+# Made by virtualcuriosities.com
+
+# size of the grid
+$width = 32; # 16, 160
+$height = 32; # 16, 160
+
+# origin of the grid
+# default is 0, 0
+$originx = 0; # -32, 32
+$originy = 0; # -32, 32
+
+# slides squares to create brick patterns
+# default is 0, 0
+# a checkerboard is a brick pattern by default
+# so you can use this to create straight lines instead
+# leave one axis set to zero to shift the other axis
+# setting both of them to a number other than zero creates other kinds of patterns
+$brickx = 0; # -160, 160
+$bricky = 0; # -160, 160
+
+# makes lines diagonal
+# default is 0, 0
+# set X to 1 and Y to -1 to rotate the grid by 45 degrees
+$diagonalratex = 0; # -3.0, 3.0
+$diagonalratey = 0; # -3.0, 3.0
+
+# lets you make an isometric checkerboard
+# default is 1, 1
+# set Y to 2 and diagonals to 1, -1 to create an isometric checkerboard
+# setting either to zero will stretch the the checkerboard through that axis
+$scalex = 1; # -4.0, 4.0
+$scaley = 1; # -4.0, 4.0
+
+# colors of the grid
+# default is black and white
+$color1 = [0,0,0];
+$color2 = [1,1,1];
+
+# global coordinates
+$gx = $u * $w;
+$gy = $v * $h;
+
+# local coordinates
+$fx = ($gx + $originx) * $scalex;
+$fy = ($gy + $originy) * $scaley;
+$x = floor($fx);
+$y = floor($fy);
+
+# sget quare coordinates
+# diagonalrate is accounted here to make bricks work diagonally
+$sqx = floor(($x + $fy * abs($diagonalratex)) / $width);
+$sqy = floor(($y + $fx * abs($diagonalratey)) / $height);
+
+# apply diagonal effect
+$dx = $x - $diagonalratex * $y;
+$dy = $y - $diagonalratey * $x;
+
+# apply brick effect
+$bx = $dx - $brickx * $sqy;
+$by = $dy - $bricky * $sqx;
+
+# loop
+$lx = $bx % ($width * 2);
+$ly = $by % ($height * 2);
+
+# which row/column
+$xisalt = $lx < $width;
+$yisalt = $ly < $height;
+
+$xisalt == $yisalt ? $color1  : $color2
+
+# MIT License
+# 
+# Copyright (c) 2025 Virtual Curiosities
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.

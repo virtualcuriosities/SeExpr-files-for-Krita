@@ -1,0 +1,101 @@
+# Made by virtualcuriosities.com
+
+# width and height of the grid
+$width = 32; # 16, 160
+$height = 32; # 16, 160
+
+# origin offset
+# default is 0, 0
+$originx = 0; # -32, 32
+$originy = 0; # -32, 32
+
+# slides squares to create brick patterns
+# default is 0, 0
+$brickx = 0; # -160, 160
+$bricky = 0; # -160, 160
+
+# makes lines diagonal
+# default is 0, 0
+# set X to 1 and Y to -1 to rotate the grid by 45 degrees
+$diagonalratex = 0; # -3.0, 3.0
+$diagonalratey = 0; # -3.0, 3.0
+
+# lets you make an isometric grid
+# default is 1, 1
+$scalex = 1; # -4.0, 4.0
+$scaley = 1; # -4.0, 4.0
+
+# tries to fix "gaps" in diagonal lines
+# default is 1, 1
+$xgapfix = 1; # 0.0, 2.0
+$ygapfix = 1; # 0.0, 2.0
+
+# thickness of lines
+# default is 1, 1
+$thicknessx = 1; # 0, 64
+$thicknessy = 1; # 0, 64
+
+# colors
+# default is black and white
+$linecolor = [0,0,0];
+$bgcolor = [1,1,1];
+
+# global coords
+$gx = $u * $w;
+$gy = $v * $h;
+
+# local coords
+# thickness is added to origin to make lines bottom/right sided by default
+$fx = ($gx + $originx + $thicknessx) * $scalex;
+$fy = ($gy + $originy + $thicknessy) * $scaley;
+$x = floor($fx);
+$y = floor($fy);
+
+# which square
+# diagonalrate is accounted here to make bricks work diagonally
+$sqx = floor(($x + $fy * abs($diagonalratex)) / $width);
+$sqy = floor(($y + $fx * abs($diagonalratey)) / $height);
+
+# apply diagonal effect
+$dx = $x - $diagonalratex * $y;
+$dy = $y - $diagonalratey * $x;
+
+# apply brick effect
+$sx = $dx - $brickx * $sqy;
+$sy = $dy - $bricky * $sqx;
+
+# loop for each square
+$loopedx = $sx % $width;
+$loopedy = $sy % $height;
+
+# I don't know how to fix this perfectly but this is better than nothing
+$xcounterscale = 1 + $xgapfix * (max(0, abs($diagonalratex) - 1) + $scalex - 1 + abs($diagonalratey) * ($scaley - 1));
+$ycounterscale = 1 + $ygapfix * (max(0, abs($diagonalratey) - 1) + $scaley - 1 + abs($diagonalratex) * ($scalex - 1));
+
+# check if the pixel is a line or not
+$xisline = $loopedx < $thicknessx * $xcounterscale;
+$yisline = $loopedy < $thicknessy * $ycounterscale;
+
+$xisline || $yisline ? $linecolor : $bgcolor
+
+# MIT License
+# 
+# Copyright (c) 2025 Virtual Curiosities
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
